@@ -1,0 +1,37 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "vn.tphan.jhipster"
+    },
+    "jhipsterVersion": "6.10.1",
+    "applicationType": "monolith",
+    "baseName": "jhipster",
+    "packageName": "vn.tphan.jhipster",
+    "packageFolder": "vn/tphan/jhipster",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "OGVhMmE2MWZkZDIyZTVmMGM1Mzk5OTA3ZmFmOTJmMzM3Mjg1YzFkZDVmZDhkODhjMWZkMmI4NTY4YTNlMTdjZDhmMzRiOTg2MDhjZGMwMGY0YzhhMjM0OTUzZjFmODU1MTIwMGQ3M2RlNWJiNjE3ZTFlNmU4ZWEyYWQ2MjNiNTk=",
+    "embeddableLaunchScript": false,
+    "creationTimestamp": 1595314922289,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "blueprints": [],
+    "skipClient": true
+  }
+}
