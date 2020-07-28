@@ -61,8 +61,7 @@ public class AccountResourceIT {
     public void testNonAuthenticatedUser() throws Exception {
         restAccountMockMvc.perform(get("/api/authenticate")
             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(""));
+            .andExpect(status().isUnauthorized());
     }
 
     @Test
