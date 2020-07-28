@@ -20,6 +20,7 @@ import vn.tphan.jhipster.neutron.services.mapper.GameDTOMapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/games")
@@ -47,7 +48,7 @@ public class GameEndpoint extends CrudApiEndpoint<Game, Long> {
         if ((entity = this.gameService.joinGame(name)) == null) {
             throw new GameIsFullException(name);
         }
-        return new ResponseEntity<>(entity, HttpStatus.OK);
+        return new ResponseEntity<>(entity, HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/")
@@ -67,5 +68,16 @@ public class GameEndpoint extends CrudApiEndpoint<Game, Long> {
         } catch (UnauthorizedUserException uae) {
             throw new UnauthorizedUserException();
         }
+    }
+    @DeleteMapping(path = "/{name}")
+    public ResponseEntity<GameDTO> leaveGame(@PathVariable String name) {
+        Game game = gameService.leave(name).orElse(null);
+        if (game == null) {
+            throw new GameNotFoundException(name);
+        }
+        if (game.isEmpty()) {
+            hashMap.remove(name);
+        }
+        return new ResponseEntity<>(mapper.gameToGameDTO(game), HttpStatus.NO_CONTENT);
     }
 }

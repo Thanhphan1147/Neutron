@@ -18,7 +18,12 @@ public class GameDTOMapper {
     }
 
     public GameDTO gameToGameDTO(Game game) {
-        return new GameDTO(game, hashMap.get(game.getName()));
+        Board board = hashMap.get(game.getName());
+        if (board == null) {
+            board = new Board(game.getName());
+            hashMap.put(game.getName(), board);
+        }
+        return new GameDTO(game, board);
     }
 
 

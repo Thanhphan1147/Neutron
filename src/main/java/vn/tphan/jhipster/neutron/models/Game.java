@@ -59,11 +59,24 @@ public class Game extends IdEntity {
         return playerOne != null && playerTwo != null;
     }
 
+    public boolean isEmpty() {
+        return playerOne == null && playerTwo == null;
+    }
+
     public void setPlayer(String name) {
         if(playerOne != null) {
             this.setPlayerTwo(name);
         } else {
             this.setPlayerOne(name);
+        }
+    }
+
+    public void removePlayer(String name) {
+        if (name.equals(playerOne)) {
+            setPlayerOne(null);
+        }
+        else if (name.equals(playerTwo)) {
+            setPlayerTwo(null);
         }
     }
 }

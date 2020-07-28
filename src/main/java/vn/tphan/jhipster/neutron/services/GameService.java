@@ -18,6 +18,7 @@ import vn.tphan.jhipster.neutron.repositories.GameRepository;
 import vn.tphan.jhipster.neutron.services.dto.GameDTO;
 import vn.tphan.jhipster.security.SecurityUtils;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -108,5 +109,17 @@ public class GameService extends CrudService<Game, Long> {
         entityDTO.getBoard().setPiece(piece);
         return entityDTO;
     }
+
+    public Optional<Game> leave(String name) {
+        Optional<Game> game = gameDetails(name);
+        game.ifPresent(this::unSetPlayer);
+        return game;
+    }
+
+    private void unSetPlayer(@NotNull Game game) {
+        String login = SecurityUtils.getCurrentUserLogin().orElse("Anonymous");
+        game.removePlayer(login);
+    }
+
 
 }
