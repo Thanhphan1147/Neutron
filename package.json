@@ -19,5 +19,13 @@
   },
   "scripts": {
     "prettier:format": "prettier --write \"{,src/**/}*.{md,json,yml}\""
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2",
+    "bootstrap": "^4.5.0",
+    "bootswatch": "^4.5.0",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1"
   }
 }

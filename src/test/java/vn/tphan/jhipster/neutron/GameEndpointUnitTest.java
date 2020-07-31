@@ -53,4 +53,12 @@ public class GameEndpointUnitTest {
         return new GameDTO(game, new Board(game.getName()));
     }
 
+    @Test
+    @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+    public void showNotExistGame() throws Exception {
+        this.mockMvc.perform(get("/api/games/aGameThatDoesNotExist")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
+    }
+
 }
