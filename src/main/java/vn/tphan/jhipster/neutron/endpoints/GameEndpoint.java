@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vn.tphan.jhipster.core.CrudApiEndpoint;
 import vn.tphan.jhipster.core.CrudService;
@@ -17,6 +18,7 @@ import vn.tphan.jhipster.neutron.models.Piece;
 import vn.tphan.jhipster.neutron.services.GameService;
 import vn.tphan.jhipster.neutron.services.dto.GameDTO;
 import vn.tphan.jhipster.neutron.services.mapper.GameDTOMapper;
+import vn.tphan.jhipster.security.AuthoritiesConstants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,11 +65,7 @@ public class GameEndpoint extends CrudApiEndpoint<Game, Long> {
     @PutMapping(path = "/{name}")
     public ResponseEntity<GameDTO> updateGameState(@PathVariable String name,
                                                    @RequestBody Piece piece) {
-        try {
-            return new ResponseEntity<>(this.gameService.updateGameState(name, piece), HttpStatus.OK);
-        } catch (UnauthorizedUserException uae) {
-            throw new UnauthorizedUserException();
-        }
+        return new ResponseEntity<>(this.gameService.updateGameState(name, piece), HttpStatus.OK);
     }
     @DeleteMapping(path = "/{name}")
     public ResponseEntity<GameDTO> leaveGame(@PathVariable String name) {
@@ -79,5 +77,13 @@ public class GameEndpoint extends CrudApiEndpoint<Game, Long> {
             hashMap.remove(name);
         }
         return new ResponseEntity<>(mapper.gameToGameDTO(game), HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping(path ="/all")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<GameDTO> cleanRooms() {
+        this.hashMap.clear();
+        this.gameService.deleteAll();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -1,5 +1,6 @@
 package vn.tphan.jhipster.service;
 
+import liquibase.pro.packaged.U;
 import vn.tphan.jhipster.config.Constants;
 import vn.tphan.jhipster.domain.Authority;
 import vn.tphan.jhipster.domain.User;
@@ -168,6 +169,14 @@ public class UserService {
         return user;
     }
 
+    public User createNewUser(UserDTO userDTO) {
+        User user = createUser(userDTO);
+        Set<Authority> authorities = new HashSet<>();
+        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        user.setAuthorities(authorities);
+        return user;
+    }
+
     /**
      * Update all information for a specific user, and return the modified user.
      *
@@ -295,7 +304,8 @@ public class UserService {
     }
 
 
-    private void clearUserCaches(User user) {
+    private void
+    clearUserCaches(User user) {
         Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE)).evict(user.getLogin());
         if (user.getEmail() != null) {
             Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());

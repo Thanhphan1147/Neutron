@@ -100,6 +100,10 @@ public class GameService extends CrudService<Game, Long> {
         return gameRepository.findByName(name);
     }
 
+    public void deleteAll() {
+        this.gameRepository.deleteAll();
+    }
+
     public GameDTO updateGameState(String name, Piece piece) {
         GameDTO entityDTO = gameInformation(name);
         String login = SecurityUtils.getCurrentUserLogin().orElse("Anonymous");
