@@ -53,3 +53,18 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean package'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)target\jhipster-0.0.1-SNAPSHOT.jar'
+    ArtifactName: 'neutrongamejar'
+    publishLocation: 'Container'
+    
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      
+      mvn azure-webapp:deploy
+    failOnStderr: true
