@@ -58,6 +58,13 @@ steps:
 
 - script: mvn install -B -e
 
+- script: |
+    pwd
+    ls -la
+    echo $Build.ArtifactStagingDirectory
+    echo $Build.BinariesDirectory
+  displayName: Inspect environment
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -67,8 +74,7 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'clean package'
-    
+    goals: 'clean package'    
 - task: Bash@3
   inputs:
     targetType: 'inline'
@@ -77,3 +83,18 @@ steps:
       
       # mvn azure-webapp:deploy
       echo "DONE"
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+    verbose: true
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'neutrongame-sc'
+    appType: 'webAppLinux'
+    appName: 'jhipster-1597933608302'
+    package: '$(Build.ArtifactStagingDirectory)/*.zip'
+    runtimeStack: 'JAVA|8-jre8'
