@@ -60,7 +60,7 @@ steps:
 
 - script: |
     pwd
-    ls -la
+    ls -la ..
     echo $Build.ArtifactStagingDirectory
     echo $Build.BinariesDirectory
   displayName: Inspect environment
@@ -85,7 +85,7 @@ steps:
       echo "DONE"
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+    rootFolderOrFile: '$(Pipeline.Workspace)/s/target'
     includeRootFolder: true
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
