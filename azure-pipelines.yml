@@ -61,4 +61,3 @@ steps:
       # Write your commands here
       
       mvn azure-webapp:deploy
-    failOnStderr: true
