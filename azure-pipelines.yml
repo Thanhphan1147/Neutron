@@ -9,6 +9,10 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
+  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+
 steps:
 # Updating the python version available on the linux agent
 - task: UsePythonVersion@0
@@ -43,10 +47,21 @@ steps:
     git pr list
   displayName: 'Show build list and PRs'
 
+- task: Cache@2
+  inputs:
+    key: 'maven | "$(Agent.OS)" | **/pom.xml'
+    restoreKeys: |
+      maven | "$(Agent.OS)"
+      maven
+    path: $(MAVEN_CACHE_FOLDER)
+  displayName: Cache Maven local repo
+
+- script: mvn install -B -e
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
+    mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
@@ -60,4 +75,5 @@ steps:
     script: |
       # Write your commands here
       
-      mvn azure-webapp:deploy
+      # mvn azure-webapp:deploy
+      echo "DONE"
