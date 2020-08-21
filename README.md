@@ -1,5 +1,8 @@
-[![<Thanhphan1147>](https://circleci.com/gh/Thanhphan1147/Backend-API.svg?style=shield)](https://app.circleci.com/pipelines/github/Thanhphan1147/Backend-API)
+[circleci]: <https://circleci.com/gh/Thanhphan1147/Backend-API.svg?style=shield>
+
 # jhipster
+| [![circleci]](https://app.circleci.com/pipelines/github/Thanhphan1147/Backend-API) | [![Build Status](https://dev.azure.com/tphan-personal/neutron-game/_apis/build/status/neutron-game%20(1)?branchName=master)](https://dev.azure.com/tphan-personal/neutron-game/_build/latest?definitionId=4&branchName=master) | 
+|:-----------------|:-------------|
 
 This application was generated using JHipster 6.10.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.1](https://www.jhipster.tech/documentation-archive/v6.10.1).
 
