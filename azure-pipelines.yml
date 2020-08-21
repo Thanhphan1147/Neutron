@@ -98,3 +98,4 @@ steps:
     appName: 'jhipster-1597933608302'
     package: '$(Build.ArtifactStagingDirectory)/*.zip'
     runtimeStack: 'JAVA|8-jre8'
+    startUpCommand: java -jar /home/site/wwwroot/target/jhipster-0.0.1-SNAPSHOT.jar
