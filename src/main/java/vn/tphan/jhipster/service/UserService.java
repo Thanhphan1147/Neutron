@@ -21,6 +21,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vn.tphan.jhipster.service.dto.UserRegisterDTO;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -169,11 +170,31 @@ public class UserService {
         return user;
     }
 
-    public User createNewUser(UserDTO userDTO) {
-        User user = createUser(userDTO);
+    public User createNewUser(UserRegisterDTO userRegisterDTO) {
+        User user = new User();
+        user.setLogin(userRegisterDTO.getLogin().toLowerCase());
+        user.setFirstName(userRegisterDTO.getFirstName());
+        user.setLastName(userRegisterDTO.getLastName());
+        if (userRegisterDTO.getEmail() != null) {
+            user.setEmail(userRegisterDTO.getEmail().toLowerCase());
+        }
+        user.setImageUrl(userRegisterDTO.getImageUrl());
+        if (userRegisterDTO.getLangKey() == null) {
+            user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
+        } else {
+            user.setLangKey(userRegisterDTO.getLangKey());
+        }
+        String encryptedPassword = passwordEncoder.encode(userRegisterDTO.getPassword());
+        user.setPassword(encryptedPassword);
+        user.setResetKey(RandomUtil.generateResetKey());
+        user.setResetDate(Instant.now());
+        user.setActivated(true);
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         user.setAuthorities(authorities);
+        this.clearUserCaches(user);
+        userRepository.save(user);
+        log.info("Created user {}@{}", user.getLogin(), user.getFirstName() + " " + user.getLastName());
         return user;
     }
 

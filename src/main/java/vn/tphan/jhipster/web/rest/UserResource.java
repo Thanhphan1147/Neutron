@@ -7,6 +7,7 @@ import vn.tphan.jhipster.security.AuthoritiesConstants;
 import vn.tphan.jhipster.service.MailService;
 import vn.tphan.jhipster.service.UserService;
 import vn.tphan.jhipster.service.dto.UserDTO;
+import vn.tphan.jhipster.service.dto.UserRegisterDTO;
 import vn.tphan.jhipster.web.rest.errors.BadRequestAlertException;
 import vn.tphan.jhipster.web.rest.errors.EmailAlreadyUsedException;
 import vn.tphan.jhipster.web.rest.errors.LoginAlreadyUsedException;
@@ -185,5 +186,22 @@ public class UserResource {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "A user is deleted with identifier " + login, login)).build();
+    }
+
+    @PostMapping("/users/register")
+    public ResponseEntity<User> newUser(@RequestBody UserRegisterDTO userRegisterDTO) {
+        if (userRegisterDTO.getId() != null) {
+            throw new BadRequestAlertException("A new user cannot already have an ID", "userManagement", "idexists");
+            // Lowercase the user login before comparing with database
+        } else if (userRegisterDTO.getPassword() == null) {
+            throw new BadRequestAlertException("Password cannot be null", "userManagement", "no password");
+        } else if (userRepository.findOneByLogin(userRegisterDTO.getLogin().toLowerCase()).isPresent() || userRegisterDTO.getLogin() == null) {
+            throw new LoginAlreadyUsedException();
+        } else if (userRepository.findOneByEmailIgnoreCase(userRegisterDTO.getEmail()).isPresent() || userRegisterDTO.getEmail() == null) {
+            throw new EmailAlreadyUsedException();
+        } else {
+            User user = this.userService.createNewUser(userRegisterDTO);
+            return new ResponseEntity<User>(user, HttpStatus.CREATED);
+        }
     }
 }
