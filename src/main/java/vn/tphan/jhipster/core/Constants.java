@@ -15,7 +15,7 @@ public class Constants {
     public static final Integer RED_STARTING_POSITION = 0;
     public static final Integer BLUE_STARTING_POSITION = 4;
     public enum Color {
-        RED, BLUE
+        RED, BLUE, NEUTRON
     }
     // Error constants
     public static final String PROBLEM_BASE_URL = "http://tphan.jhipster.test/problem";

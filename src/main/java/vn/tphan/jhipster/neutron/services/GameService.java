@@ -106,6 +106,9 @@ public class GameService extends CrudService<Game, Long> {
 
     public GameDTO updateGameState(String name, Piece piece) {
         GameDTO entityDTO = gameInformation(name);
+        if (entityDTO == null) {
+            throw new GameNotFoundException(name);
+        }
         String login = SecurityUtils.getCurrentUserLogin().orElse("Anonymous");
         if ( login.equals("Anonymous") || !(entityDTO.isPlayer(login)) ) {
             throw new UnauthorizedUserException();
